@@ -1,0 +1,22 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore virtual environment
+backend/venv/
+
+# Ignore database
+backend/models/face_data.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Ignore compiled files
+*.so
+*.dll
+*.exe
+
+# Ignore Jupyter notebooks checkpoints
+.ipynb_checkpoints/
