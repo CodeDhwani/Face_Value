@@ -1,6 +1,8 @@
 fastapi
 uvicorn
-face_recognition
-opencv-python
 python-multipart
-sqlite3
+pillow
+numpy
+deepface
+opencv-python
+tensorflow
