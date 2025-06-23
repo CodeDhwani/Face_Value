@@ -5,4 +5,4 @@ pillow
 numpy
 deepface
 opencv-python
-tensorflow
+tensorflow==2.10.0
