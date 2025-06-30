@@ -1,10 +1,11 @@
 services:
   - type: web
-    name: face-backend
+    name: face-value-backend
     env: python
     plan: free
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: gunicorn backend.main:app
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10.13
+    region: oregon
+    branch: backend
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app --bind 0.0.0.0:8000
+
