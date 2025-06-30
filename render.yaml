@@ -6,6 +6,7 @@ services:
     region: oregon
     branch: backend
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      echo "python-3.10.13" > /etc/python-version
+      pip install -r requirements.txt
     startCommand: gunicorn main:app --bind 0.0.0.0:8000
-
