@@ -1,7 +1,10 @@
-# Use a base image that supports TensorFlow and DeepFace
+# Use a lightweight base image with Python 3.10
 FROM python:3.10-slim
 
-# Install system-level dependencies required by OpenCV and other libs
+# Set working directory inside the container
+WORKDIR /app
+
+# Install system-level dependencies required by cv2, DeepFace, etc.
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -11,18 +14,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
-
-# Copy requirements and install
+# Copy requirements from backend folder
 COPY requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy your app code
+# Copy the rest of the app code
 COPY . .
 
-# Expose the port used by uvicorn
-EXPOSE 10000
+# Expose port used by FastAPI/Uvicorn
+EXPOSE 8000
 
-# Command to run your app
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:10000", "main:app"]
+# Start the FastAPI app using gunicorn + uvicorn worker
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000"]
