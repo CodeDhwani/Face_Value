@@ -1,28 +1,18 @@
-# Use official Python image with 3.10
 FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Prevents interactive tzdata prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Set working directory
-WORKDIR /app
-
-# Copy requirements
-COPY requirements.txt .
-
-# Install system dependencies & Python packages
+# Install build essentials for numpy / opencv
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libgl1 \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+    build-essential libgl1 && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+WORKDIR /app
+COPY backend/ ./
 
-# Copy app files
-COPY . .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Start app
-CMD ["gunicorn", "run:app", "--workers", "1", "--bind", "0.0.0.0:8000"]
+EXPOSE 10000
+CMD ["gunicorn", "main:app", "--workers", "1", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:10000"]
