@@ -3,6 +3,5 @@ uvicorn
 python-multipart
 pillow
 numpy
-deepface
 opencv-python
-tensorflow==2.10.0
+deepface
